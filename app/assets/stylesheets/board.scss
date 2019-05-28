@@ -1,0 +1,132 @@
+@import './colors.scss';
+
+.board {
+  background-color: $accent1;
+  $title_height: 45px;
+
+  &__title {
+    width: 100%;
+    height: $title_height;
+    padding: 0.5rem;
+    background-color: $black20;
+    color: $accent2;
+    font-size: 14pt;
+    box-sizing: border-box;
+  }
+
+  &_action {
+    margin: 0 0.2rem;
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.3rem;
+
+    :hover {
+      background-color: $black20;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    height: calc(100% - $title_height - 1rem);
+    margin-top: 1rem;
+    box-sizing: border-box;
+    white-space: nowrap;
+    padding: 0 0.3rem;
+    overflow-y: auto;
+  }
+
+  &__new-task {
+    width: 100%;
+    padding: 0.4rem;
+    color: $accent2;
+    cursor: pointer;
+
+    :hover {
+      text-decoration: underline;
+      background-color: $black20;
+    }
+  }
+
+  &__column {
+    display: inline-block;
+    width: 300px;
+    background-color: $base1;
+    margin: 0 0.2rem;
+    max-height: calc(100% - 0.5rem);
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+    color: $accent2;
+    overflow: hidden;
+    vertical-align: top;
+
+    &__title {
+      padding: 0.4rem;
+    font-weight: bold;
+    }
+
+    :last-child {
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__card {
+    border-radius: 0.3rem;
+    padding: 0.4rem;
+    background-color: $accent2;
+    color: $text1;
+    margin: 0.2rem;
+    white-space: normal;
+    box-sizing: border-box;
+
+    &_ghost {
+      background-color: $black20;
+    }
+
+    &_grabbed {
+      position: fixed;
+      transform: rotate(5deg);
+      box-shadow: 2px 2px 5px;
+    }
+  }
+}
+
+.priority-marks {
+  display: flex;
+}
+
+.priority-mark {
+  display: block;
+  width: 30px;
+  height: 8px;
+  border-radius: 4px;
+  margin:0.2rem;
+  color: $text2;
+}
+
+.priority-desc {
+  min-width: 15px;
+  display: inline-block;
+  padding: 0.3rem;
+  border-radius: 4px;
+  margin:0.2rem;
+  color: $text2;
+  text-align: center;
+}
+
+.priority0 {
+  background-color: lightgray;
+  color: gray;
+  font-weight: bold;
+}
+
+.priority1 {
+  background-color: red;
+}
+
+.priority2 {
+  background-color: fuchsia;
+}
+
+.priority3 {
+  background-color: dodgerblue
+}
