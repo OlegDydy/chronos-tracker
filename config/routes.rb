@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :comments
   resources :uploaded_files
   resources :tracks
@@ -7,6 +8,7 @@ Rails.application.routes.draw do
   resources :positions
   resources :workers
   resources :customers
-  resources :users
+  resources :boards
+  get '/boards', to: 'boards/#index', as: :user_root
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
