@@ -1,0 +1,43 @@
+@import '../colors.scss';
+
+.panels {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+}
+
+.content {
+  background-color: $accent5;
+  width:calc(100% - 300px);;
+}
+
+.avatar {
+  vertical-align: middle;
+}
+
+.left-panel {
+  display: inline-block;
+  position: relative;
+  width: 300px;
+  background-color: $base2;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  color: $accent3;
+
+
+  &__links {
+    position: absolute;
+    bottom: 0;
+  }
+
+  &__links a {
+    color: $accent3;
+  }
+
+  &__links a:hover {
+    text-decoration: underline;
+  }
+
+}

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  track_id: 1
+  begin: 2019-05-28 14:31:11
+  end: 2019-05-28 14:31:11
+
+two:
+  track_id: 1
+  begin: 2019-05-28 14:31:11
+  end: 2019-05-28 14:31:11

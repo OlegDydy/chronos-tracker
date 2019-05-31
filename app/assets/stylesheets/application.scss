@@ -14,7 +14,10 @@
  *= require_self
  */
 
-* {
+@import './colors.scss'; 
+@import './components/list.scss';
+
+body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -27,4 +30,41 @@
 
 a {
   text-decoration: none;
+}
+
+.button-set {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+button {
+  background-color: $accent1;
+  padding: 0.1rem 1rem;
+  color: $accent2;
+  border: 1px solid $border;
+  border-radius: 0.4rem;
+  font-size: 12pt;
+  margin: 0.2rem;
+}
+
+button:hover {
+  background-color: $accent4;
+}
+
+button:active {
+  background-color: $accent3;
+}
+
+button:focus {
+  border-color: $accent4;
+}
+
+.btn_full-length {
+  width: 100%;
+}
+
+.space-top {
+  margin-top: 2rem;
 }

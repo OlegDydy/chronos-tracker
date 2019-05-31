@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :activity_periods
+  resources :columns
   devise_for :users
   resources :comments
   resources :uploaded_files

@@ -1,0 +1,50 @@
+@import '../colors.scss';
+
+@font-face {
+  font-family: "Supermolot Regular";
+  src: url(/assets/Supermolot.woff);
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 80px;
+  background-color: $base1;
+  width: 100%;
+  padding: 0 1rem;
+
+
+  &__icon {
+    display: inline-block;
+    background-image: url("/assets/icon.png");
+    background-image: url("/assets/icon.webp");
+    width: 58px;
+    height: 58px;
+    background-size: contain;
+    vertical-align: middle;
+    vertical-align: -25%;
+  }
+
+  &__logo {
+    color: $accent2;
+    font: normal 24pt "Supermolot Regular", Arial, sans;
+    text-decoration: none;
+    margin-right: 2rem;
+  }
+
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    font: normal 16pt Arial, sans;
+    color: $accent2;
+    box-sizing: border-box;
+  }
+
+  .selected {
+    background-color: $black20;
+  }
+}

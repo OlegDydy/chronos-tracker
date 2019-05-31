@@ -1,12 +1,12 @@
 class CreateTracks < ActiveRecord::Migration[5.2]
   def change
     create_table :tracks do |t|
-      t.integer :user_id
+      t.integer :worker_id
       t.integer :task_id
-      t.timestamp :begin
-      t.timestamp :end
-
+      
       t.timestamps
     end
+    add_index :tracks, :worker_id
+    add_index :tracks, :track_id
   end
 end

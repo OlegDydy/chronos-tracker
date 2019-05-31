@@ -7,6 +7,19 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :photo
       
+      ## STI
+      t.string :type, null: false
+
+      ## Customer
+      t.string :card, length: {minimum:16, maximum:16}
+      t.string :telephone, length: {minimum:16, maximum:16}
+      t.string :about
+
+      ## Worker
+      t.integer :qualification
+      t.integer :position_id
+      t.boolean :halftime
+
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
@@ -45,5 +58,10 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     add_index :users, :reset_password_token, unique: true
     add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
+
+    ## Workers
+    # add_index :users, :qualification
+    # add_index :users, :position_id
+    # add_index :users, :halftime
   end
 end

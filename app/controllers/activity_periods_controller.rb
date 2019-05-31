@@ -1,0 +1,2 @@
+class ActivityPeriodsController < ApplicationController
+end

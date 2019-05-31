@@ -27,10 +27,11 @@ class Board extends React.Component {
   }
 
   render () {
-    const { board } = this.props;
-    const user = board.owner;
+    const { board, user } = this.props;
+    
+    if (!board) return null;
     return (
-      <div className="board">
+      <React.Fragment>
         <div className="board__title">
           <span className="board_action">{board.name}</span>
           {
@@ -47,7 +48,7 @@ class Board extends React.Component {
         <div className="board__body">
           { this.renderColumns(board.columns) }
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

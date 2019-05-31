@@ -1,8 +1,10 @@
 @import './colors.scss';
 
+@import './components/left_panel.scss';
+@import './components/nav_bar.scss';
+
+$title_height: 45px;
 .board {
-  background-color: $accent1;
-  $title_height: 45px;
 
   &__title {
     width: 100%;
@@ -27,7 +29,7 @@
 
   &__body {
     width: 100%;
-    height: calc(100% - $title_height - 1rem);
+    height: calc(100% - 45px - 1rem);
     margin-top: 1rem;
     box-sizing: border-box;
     white-space: nowrap;
@@ -58,23 +60,27 @@
     color: $accent2;
     overflow: hidden;
     vertical-align: top;
+    padding: 0.5rem;
 
-    &__title {
-      padding: 0.4rem;
-    font-weight: bold;
+    &__list {
+      overflow-y: auto;
     }
 
-    :last-child {
+    &__title {
+      font-weight: bold;
+    }
+
+    &:last-child {
       margin-right: 0.5rem;
     }
   }
 
   &__card {
     border-radius: 0.3rem;
-    padding: 0.4rem;
+    padding: 0.3rem;
     background-color: $accent2;
     color: $text1;
-    margin: 0.2rem;
+    margin: 0.2rem 0;
     white-space: normal;
     box-sizing: border-box;
 
