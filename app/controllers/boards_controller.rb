@@ -13,27 +13,47 @@ class BoardsController < ApplicationController
   end
 
   def boards
-    [
+    projects = []
+    if current_user.instance_of?(Worker)
+      projects = current_user.projects
+    else
+      projects = current_user.my_projects
+    end
+    projects.map do |project|
       {
-        id: 1,
-        name: 'Self-Education',
-        owner: user,
-        columns: [
+        id: project.id,
+        name: project.name,
+        owner: project.owner_id,
+        columns: project.columns.map do |column|
           {
-            id: 1,
-            name: 'TODO',
-            tasks: [
-              {
-                id: 1,
-                name: 'Some Cool Feature',
-                marks: [ 1, 2 ],
-                description: 'I haven\'t figured it out yet'
-              }
-            ]
+            id: column.id,
+            name: column.name,
+            tasks: column.tasks.map {|task| {id: task.id, name: task.name, marks: task.marks} }
           }
-        ]
+        end
       }
-    ]
+    end
+    # [
+    #   {
+    #     id: 1,
+    #     name: 'Self-Education',
+    #     owner: user,
+    #     columns: [
+    #       {
+    #         id: 1,
+    #         name: 'TODO',
+    #         tasks: [
+    #           {
+    #             id: 1,
+    #             name: 'Some Cool Feature',
+    #             marks: [ 1, 2 ],
+    #             description: 'I haven\'t figured it out yet'
+    #           }
+    #         ]
+    #       }
+    #     ]
+    #   }
+    # ]
   end
 
   def user

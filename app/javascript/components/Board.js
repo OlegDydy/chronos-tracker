@@ -1,37 +1,13 @@
 import React from "react"
 import PropTypes from "prop-types"
+import Column from "./Column";
 class Board extends React.Component {
-  renderCards(cards) {
-    return cards.map( card => {
-      return (
-        <div className="board__card" key={ card.id }>
-          <div className="priority-marks"></div>
-          {card.name}
-        </div>
-      )
-    })
-  }
-
-  renderColumns(columns){
-    return columns.map( column => {
-      return (
-        <div className="board__column" key={ column.id }>
-          <div className="board__column__title">{ column.name }</div>
-          <div className="board__column__list">
-            { this.renderCards(column.tasks) }
-          </div>
-          <div className="board__new-task">+ Новая Задача</div>
-        </div>
-      )
-    })
-  }
-
   render () {
     const { board, user } = this.props;
     
     if (!board) return null;
     return (
-      <React.Fragment>
+      <>
         <div className="board__title">
           <span className="board_action">{board.name}</span>
           {
@@ -46,9 +22,9 @@ class Board extends React.Component {
           }
         </div>
         <div className="board__body">
-          { this.renderColumns(board.columns) }
+          { board.columns.map( column => (<Column key={column.id} data={column} project={board.id} />)) }
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }

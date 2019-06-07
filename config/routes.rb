@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :workers
   resources :customers
   resources :boards
-  get '/boards', to: 'boards/#index', as: :user_root
+  resources :projects
+  get '/', to: 'boards#index', as: :default
+  get '/boards', to: 'boards#index', as: :user_root
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

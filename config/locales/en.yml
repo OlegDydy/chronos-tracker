@@ -30,4 +30,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  error:
+    no_project: "Project with id %{id} does not exists"
+    no_project: "Project have now column with id %{id}"
+    not_owner: "I'll remember it"
   hello: "Hello world"

@@ -61,11 +61,11 @@ ActiveRecord::Schema.define(version: 2019_05_29_094231) do
     t.index ["owner_id"], name: "index_projects_on_owner_id"
   end
 
-  create_table "projects_users", id: false, force: :cascade do |t|
+  create_table "projects_workers", id: false, force: :cascade do |t|
     t.integer "project_id", null: false
-    t.integer "user_id", null: false
-    t.index ["project_id"], name: "index_projects_users_on_project_id"
-    t.index ["user_id"], name: "index_projects_users_on_user_id"
+    t.integer "worker_id", null: false
+    t.index ["project_id"], name: "index_projects_workers_on_project_id"
+    t.index ["worker_id"], name: "index_projects_workers_on_worker_id"
   end
 
   create_table "tasks", force: :cascade do |t|
