@@ -5,10 +5,10 @@ export default class Project extends Model {
   constructor(){
     super()
     const { prop } = this
+    prop('id', 'rw');
     prop('name', 'rw', { default: 'New Project' });
     prop('columns', 'rw', { default: [], extractor: this.convertColumns });
     prop('description', 'rw');
-    prop('id', 'r');
   }
 
   convertColumns = columns => {
@@ -16,15 +16,16 @@ export default class Project extends Model {
   }
 
   static fromJSON(json){
-    const proj = new Project
-    proj.extractData(json)
+    const proj = new Project()
+    proj.extractData(json, this.id)
     return proj
   }
 
   addColumn(name) {
     const col = new Column(name, this.id);
-    this.__data__.columns.push(col)
-    if (this.__emitEvent('columnsChanged', col) !== false)
+    if (this.__emitEvent('columnsChanged', col) !== false){
+      this.__data__.columns.push(col)
       this.__emitEvent('changed', null)
+    }
   }
 }

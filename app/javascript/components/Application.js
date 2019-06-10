@@ -1,9 +1,10 @@
 import React from "react"
-import PropTypes from "prop-types"
+import { combineReducers, createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
 
-import NavBar from "./NavBar";
-import LeftPanel from "./LeftPanel";
-import Board from "./Board";
+import * as reducers from '../reducers'
+import Tracker from './Tracker'
 
 function getRouteId(route){
   const match = route.match(/(\/[^\/]*)(?:\/(\d+))?/)
@@ -15,6 +16,9 @@ function getRouteId(route){
   }
 }
 
+const reducer = combineReducers(reducers);
+const store = createStore(reducers, applyMiddleware(thunk));
+
 class Application extends React.Component {
   constructor(props){
     super(props);
@@ -25,7 +29,6 @@ class Application extends React.Component {
     }
 
     window.onpopstate = this.handleBack;
-    window.onstate
   }
 
   handleBack = e => {
@@ -36,30 +39,16 @@ class Application extends React.Component {
     })
   }
 
-  setBoard = (board) => {
+  setBoard = board => {
     this.setState({ board });
     history.pushState(null, '', `/boards/${board}`);
   }
   
   render () {
-    const { boards, user } = this.props;
-
-    const board = boards.find( board => board.id === this.state.board);
     return (
-      <React.Fragment>
-        <NavBar user={user} tab={this.state.tab} />
-        <div className="panels">
-          <LeftPanel
-            user={user}
-            boards={boards}
-            selectedIndex={ this.state.board }
-            setBoard={ this.setBoard }
-          />
-          <div id="content" className="content">
-            <Board user={user} board={board} />
-          </div>
-        </div>
-      </React.Fragment>
+      <Provider store={store}>
+        {() => <Tracker />}
+      </Provider>
     );
   }
 }

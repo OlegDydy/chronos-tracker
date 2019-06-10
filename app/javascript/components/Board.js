@@ -2,6 +2,11 @@ import React from "react"
 import PropTypes from "prop-types"
 import Column from "./Column";
 class Board extends React.Component {
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('updated')
+  }
+
   render () {
     const { board, user } = this.props;
     

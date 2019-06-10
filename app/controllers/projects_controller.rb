@@ -1,24 +1,17 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
- 
-  # list of all avaliable projects
-  def index
 
-  end
+  # list of all avaliable projects
+  def index; end
 
   # one specified project
-  def show
-
-  end
+  def show; end
 
   # change specified project
-  def edit
-    
-  end
-  
+  def edit; end
+
   # create new project
-  def new
-
-  end
-
+  def new; end
 end

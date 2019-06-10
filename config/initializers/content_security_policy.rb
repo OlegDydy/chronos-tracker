@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+
 # Be sure to restart your server when you modify this file.
 
 # Define an application-wide content security policy
@@ -13,7 +16,7 @@
 #   policy.style_src   :self, :https
 
 #   # Specify URI for violation reports
-#   # policy.report_uri "/csp-violation-report-endpoint"
+#   # policy.report_uri '/csp-violation-report-endpoint'
 # end
 
 # If you are using UJS then enable automatic nonce generation
@@ -25,5 +28,5 @@
 # Rails.application.config.content_security_policy_report_only = true
 
 Rails.application.config.content_security_policy do |policy|
-  policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035" if Rails.env.development?
+  policy.connect_src :self, :https, 'http://localhost:3035', 'ws://localhost:3035' if Rails.env.development?
 end

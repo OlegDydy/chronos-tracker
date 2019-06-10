@@ -1,0 +1,20 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'bin/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - 'node_modules/node-sass/**/**/*'
+    - !ruby/regexp /old_and_unused\.rb$/
+Metrics/LineLength:
+  AutoCorrect: true
+  Max: 120
+Metrics/MethodLength:
+  Enabled: false
+Metrics/AbcSize:
+  Max: 25
+Style/Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
