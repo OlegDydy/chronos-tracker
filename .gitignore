@@ -59,3 +59,4 @@ yarn-debug.log*
 /config/database.yml
 *.log
 /app/assets/fonts
+.byebug_history

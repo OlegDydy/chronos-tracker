@@ -21,10 +21,15 @@ export function request(action, url, data) {
     xhr.onreadystatechange = () => {
       if (xhr.readyState != 4) return undefined
       
-      if (xhr.status === 200)
-      resolve(xhr.responseText);
+      if (xhr.status === 200){
+        const obj = JSON.parse(xhr.responseText);
+        if (obj.status === 'ok')
+          resolve(obj);
+        else
+          reject(obj);
+      }
       else
-      reject(xhr.responseText || { status: xhr.status, error: xhr.statusText })
+        reject(xhr.responseText || { status: xhr.status, error: xhr.statusText })
     }
     xhr.send(JSON.stringify(data))
   })

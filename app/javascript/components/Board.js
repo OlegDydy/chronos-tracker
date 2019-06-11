@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { connect } from "react-redux";
 import Column from "./Column";
 class Board extends React.Component {
 
@@ -8,40 +9,34 @@ class Board extends React.Component {
   }
 
   render () {
-    const { board, user } = this.props;
-    
-    if (!board) return null;
+    const { projectId, user, projects } = this.props;
+    const project = projects[projectId];
+    if (!project) return null;
     return (
       <>
         <div className="board__title">
-          <span className="board_action">{board.name}</span>
+          <span className="board_action">{project.name}</span>
           {
-            board.owner.id == user.id
+            project.owner == user.id
             ? <span className="board_action">Новая задача</span>
             : null
           }
           {
-            board.is_custom
+            project.isCustom
             ? <span className="board_action">Чат с администрацией</span>
             : null
           }
         </div>
         <div className="board__body">
-          { board.columns.map( column => (<Column key={column.id} data={column} project={board.id} />)) }
+          { project.columns.map( columnId => (<Column key={columnId} columnId={columnId} />)) }
         </div>
       </>
     )
   }
 }
 
-Board.propTypes = {
-  board: PropTypes.shape({
-    name: PropTypes.string,
-    columns: PropTypes.arrayOf(PropTypes.shape(
-      {
-        name: PropTypes.string
-      }
-    ))
-  })
-};
-export default Board
+const mapStateToProps = store => ({
+  projects: store.projects
+})
+
+export default connect(mapStateToProps)(Board)

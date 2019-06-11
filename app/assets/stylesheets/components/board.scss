@@ -1,7 +1,4 @@
-@import './colors.scss';
-
-@import './components/left_panel.scss';
-@import './components/nav_bar.scss';
+@import '../colors.scss';
 
 $title_height: 45px;
 .board {
@@ -83,6 +80,7 @@ $title_height: 45px;
     margin: 0.2rem 0;
     white-space: normal;
     box-sizing: border-box;
+    cursor: pointer;
 
     &_ghost {
       background-color: $black20;
@@ -135,4 +133,11 @@ $title_height: 45px;
 
 .priority3 {
   background-color: dodgerblue
+}
+
+.new-task-modal{
+  margin: auto;
+  padding: 10px;
+  border-radius: 0.5rem;
+  background-color: $accent2;
 }

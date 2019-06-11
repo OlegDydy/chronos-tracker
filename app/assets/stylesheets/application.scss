@@ -15,26 +15,32 @@
  */
 
 @import './colors.scss'; 
+@import './components/board.scss';
 @import './components/list.scss';
+@import './components/task_modal.scss';
+@import './components/left_panel.scss';
+@import './components/nav_bar.scss';
 
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#modal {
-  position: fixed;
-  top: 0;
+.modal-overlay {
+  display: flex;
   left: 0;
-}
-
-.modal-wrapper {
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
   width: 100vw;
   height: 100vh;
-  display: flex;
+  position: fixed;
+  background-color: $black50;
   overflow:auto;
+}
+
+.modal {
+  position: relative;
+  margin: auto;
+  outline: none;
 }
 
 a {
@@ -48,7 +54,7 @@ a {
   margin-top: 2rem;
 }
 
-button {
+button, input[type='submit'], input[type='button']{
   background-color: $accent1;
   padding: 0.1rem 1rem;
   color: $accent2;
@@ -56,20 +62,20 @@ button {
   border-radius: 0.4rem;
   font-size: 12pt;
   margin: 0.2rem;
-}
 
-button:hover {
-  background-color: $accent4;
-}
 
-button:active {
-  background-color: $accent3;
-}
+  &:hover {
+    background-color: $accent4;
+  }
 
-button:focus {
-  border-color: $accent4;
-}
+  &:active {
+    background-color: $accent3;
+  }
 
+  &:focus {
+    border-color: $accent4;
+  }
+}
 .btn_full-length {
   width: 100%;
 }

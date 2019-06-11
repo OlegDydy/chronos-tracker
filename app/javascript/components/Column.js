@@ -1,101 +1,48 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Modal from 'react-modal';
-import { request } from '../utils/request'
+import { connect } from 'react-redux';
+import { showTaskModal } from '../actions/ui';
+import Task from './Task';
+import TaskModal from './modals/task_modal';
 
 Modal.setAppElement('#App')
 
-class Form extends Component {
-  state = { taskName: 'New Task' }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const { column, project } = this.props
-    const data = {
-      task: {
-        project_id: project,
-        column_id: column,
-        name: this.state.taskName
-      }
-    }
-    request('POST', '/tasks', data).then(
-      data => {
-        console.log(data)
-      },
-      err => {
-        alert(JSON.stringify(err))
-      }
-    )
-  }
-
-  handleNameChange = event => {
-    this.setState({
-      taskName: event.target.value
-    })
-  }
-
-  render() {
-    const { taskName } = this.state
-    const { handleNameChange, handleSubmit } = this
-    return  (
-      <form method="POST" remote="true" onSubmit={handleSubmit}>
-        <input name="name" placeholder="Task name" value={taskName} onChange={handleNameChange} />
-        <input type="submit" value="Create"/>
-      </form>
-    )
-  }
-}
-
 class Column extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalShown: false
-    }
-  }
-
-  renderCards(cards) {
-    return cards.map( card => {
-      return (
-        <div className="board__card" key={ card.id }>
-          <div className="priority-marks"></div>
-          {card.name}
-        </div>
-      )
-    })
-  }
-
-  showModal = () => {
-    this.setState({
-      modalShown: true
-    })
-  }
-
-  closeModal = () => {
-    this.setState({
-      modalShown: false
-    })
-  }
-
   render() {
-    const { data, project } = this.props;
-    const { modalShown } = this.state;
+    const { columns, columnId, showModal, modalShown } = this.props;
+    const column = columns[columnId];
+    if (!column) return null;
     return (
       <div className="board__column">
-        <div className="board__column__title">{ data.name }</div>
+        <div className="board__column__title">{ column.name }</div>
         <div className="board__column__list">
-          { this.renderCards(data.tasks) }
+          { column.tasks.map( taskId => <Task key={taskId} taskId={taskId} />) }
         </div>
-        <div className="board__new-task" onClick={this.showModal}>+ Новая Задача</div>
-          <Modal
-            isOpen={modalShown} 
-            onRequestClose={this.closeModal}
-          >
-            <Form column={data.id} project={project} />
-          </Modal>
+        <div className="board__new-task" onClick={() => showModal(true)}>+ Новая Задача</div>
+        <Modal
+          isOpen={modalShown} 
+          onRequestClose={() => showModal(false)}
+          overlayClassName="modal-overlay"
+          className="modal"
+          shouldCloseOnOverlayClick
+          shouldCloseOnEsc
+        >
+          <TaskModal column={columnId} project={column.projectId} closeModal={() => showModal(false)} />
+        </Modal>
       </div>
     );
   }
 }
- 
-export default Column;
+
+const mapStateToProps = store => ({
+  columns: store.columns,
+  modalShown: store.ui.taskModal
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showModal: task => dispatch(showTaskModal(task))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Column);

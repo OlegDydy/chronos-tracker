@@ -1,5 +1,6 @@
 import React from "react"
-import PropTypes from "prop-types"
+import { connect } from "react-redux";
+import iterate from "../utils/iterate";
 
 function icon(){
   return (
@@ -20,16 +21,17 @@ function icon(){
 
 class LeftPanel extends React.Component {
   renderList(list){
-    return list.map( board => {
+    const { setProject } = this.props;
+    return iterate(list, (project, id) => {
       const className = 'project-list__item' + 
-        (this.props.selectedIndex === board.id ? ' selected' : '')
+        (this.props.selectedIndex === id ? ' selected' : '')
       return (
         <div
-          key={board.id}
+          key={id}
           className={className}
-          onClick={()=>{this.props.setBoard(board.id)}}
+          onClick={()=>{setProject(id)}}
         >
-          { board.name }
+          { project.name }
         </div>)
     })
   }
@@ -46,7 +48,7 @@ class LeftPanel extends React.Component {
         </div>
         <div className="space-top">Проект:</div>
         <div className="project-list">
-          { this.renderList(this.props.boards) }
+          { this.renderList(this.props.projects) }
         </div>
         <div className="left-panel__links">
           <a href="/contacts">Связь&nbsp;с&nbsp;администрацией</a>{" | "}
@@ -60,12 +62,8 @@ class LeftPanel extends React.Component {
   }
 }
 
-LeftPanel.propTypes = {
-  setBoard: PropTypes.func,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    email: PropTypes.string
-  })
-}
-export default LeftPanel
+const mapStateToProps = store => ({
+  projects: store.projects
+})
+
+export default connect(mapStateToProps)(LeftPanel)

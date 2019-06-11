@@ -1,4 +1,4 @@
-import * as actions from '../../constants/actions'
+import * as actions from '../constants/actions/project'
 
 export function initProjects(projects){
   return {

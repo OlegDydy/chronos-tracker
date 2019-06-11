@@ -26,7 +26,7 @@ class TasksController < ApplicationController
 
   # create new project
   def create
-    permitted = params.require(:task).permit(:name, :project_id, :column_id)
+    permitted = params.require(:task).permit(:name, :project_id, :column_id, :description, mark: [])
     project = Project.find(permitted[:project_id])
     return unless protect_project(project)
 
@@ -34,15 +34,38 @@ class TasksController < ApplicationController
     return unless protect_column(column, project)
 
     permitted[:position] = column.tasks.count
+    byebug
+    permitted[:mark] = compactMarkers(permitted[:mark])
     task = Task.new permitted
     if task.save
-      render json: { status: :ok, data: task }
+      render json: { status: :ok, data: renderTask(task) }
     else
       render json: task.errors, status: :unpocessable_entity
     end
   end
 
+  def renderTask(task)
+    {
+      id: task.id,
+      position: task.position,
+      task: {
+        columnId: task.column_id,
+        projectId: task.project_id,
+        name: task.name,
+        description: task.description,
+        marks: task.marks
+      }
+    }
+  end
+
   private
+  def compactMarkers(markers)
+    result = 0
+    markers.each do |mark|
+      result |= 1 << mark
+    end
+    result
+  end
 
   def protect_project(project)
     if project.nil?
@@ -77,7 +100,7 @@ class TasksController < ApplicationController
   def permit_params
     params.require(:id).permit(
       :id, :description, :position, :name,
-      :deadline, :mark, :column_id, :project_id
+      :deadline, :column_id, :project_id, mark: []
     )
   end
 end

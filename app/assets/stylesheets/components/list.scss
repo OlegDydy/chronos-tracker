@@ -10,7 +10,6 @@
   background-color: $accent2;
   text-align: center;
   box-shadow: 0 0 2px inset;
-  cursor: pointer;
   
   .selected {
     background-color: $black20;
@@ -19,6 +18,7 @@
   &__item {
     width: 100%;
     font: 14pt Arial, sans;
+    cursor: pointer;
 
     :hover {
       background-color: $black10;

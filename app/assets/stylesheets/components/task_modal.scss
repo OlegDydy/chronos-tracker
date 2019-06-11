@@ -1,0 +1,126 @@
+@import "../colors.scss";
+
+.card-modal {
+  display: flex;
+  flex-flow: wrap;
+  margin: 1rem;
+  background-color: $accent2;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  width: 800px;
+  height: max-content;
+  background-color: #eee;
+
+  h1 {
+    font-size: 16pt;
+  }
+
+  h2 {
+    margin: 1.2rem 0 0.2rem;
+    font-size: 14pt;
+  }
+
+  &__caption {
+    width: 100%;
+    font-weight: bold;
+    font-size: 14pt;
+    
+    .close {
+      display: block;
+      float: right;
+      border-radius: 50%;
+      color: $accent5;
+      font-size: 18pt;
+      transition: all 0.5s ease;
+
+      &:hover{
+        background-color: $black20;
+      }
+
+      &:active{
+        background-color: $black50;
+      }
+
+      &::before {
+        display: block;
+        margin: 6px 10px;
+      }
+    }
+  }
+
+  &__description{
+    &_empty {
+      background-color: $base2;
+      border-radius: 0.2rem;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+    &_edit {
+      border-radius: 0.2rem;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      box-shadow: 0 0 3px inset;
+      min-height: 3em;
+      font-family: inherit;
+      outline: none;
+    }
+  }
+
+  .tiny {
+    font-size: 9pt;
+    font-weight: normal;
+  }
+
+  &__left {
+    width: 80%;
+  }
+
+  &__right {
+    width: 20%;
+
+    h2 {
+      font-weight: normal;
+      font-size: 12pt;
+      text-decoration: underline;
+    }
+  }
+
+  &__tool {
+    background-color: $accent5;
+    text-align: left;
+    padding: 0.5rem;
+
+    svg {
+      fill: $accent2;
+    }
+
+    &.long {
+      width: 100%;
+    }
+  }
+}
+
+.comment {
+  background-color: $accent2;
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  box-sizing: border-box;
+  margin: 0.3rem 0;
+  box-shadow: 0 0 2px;
+  
+  &__user {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  &__text-edit {
+    background-color: white;
+    border-radius: 0.2rem;
+    padding: 0.3rem;
+    box-sizing: border-box;
+    margin: 0.3rem 0;
+    font-family: inherit;
+    outline: none;
+  }
+}
+  
