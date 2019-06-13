@@ -1,5 +1,5 @@
 import * as actions from '../constants/actions/task';
-import { INSERT_TASK_COLUMN } from '../constants/actions/column';
+import { COLUMN_INSERT_TASK, COLUMN_REMOVE_TASK } from '../constants/actions/column';
 import { TASK_MODAL } from '../constants/actions/ui';
 import { request } from '../utils/request';
 
@@ -24,7 +24,7 @@ export function createTask(task){
             task: res.data.task
           });
           dispatch({
-            type: INSERT_TASK_COLUMN,
+            type: COLUMN_INSERT_TASK,
             task: res.data.id,
             column: res.data.task.columnId,
             position: res.data.position
@@ -45,13 +45,36 @@ export function createTask(task){
 
 export function renameTask(taskID, name) {
   return {
-    type: actions.RENAME_TASK,
+    type: actions.RENAME_TASK_SUCCESS,
+    task_id: taskID,
     name
   }
 }
 
-export function freezeTask(taskID) {
-  return {
-    type: actions.DELETE_TASK
+export function archiveTask(columnId, taskId, closeModal) {
+  return dispatch => {
+    dispatch({
+      type: actions.ARCHIVE_TASK_REQUEST
+    })
+
+    request('POST', `/tasks/${taskId}/archive`, {}).then(
+      res => {
+          dispatch({
+            type: COLUMN_REMOVE_TASK,
+            taskId: taskId,
+            column: columnId
+          });
+          dispatch({
+            type: actions.ARCHIVE_TASK_SUCCESS,
+            id: taskId
+          });
+          closeModal();
+        },
+      err => 
+        dispatch({
+          type: actions.ARCHIVE_TASK_ERROR,
+          message: err
+        })
+    )
   }
 }

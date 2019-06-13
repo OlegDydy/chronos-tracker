@@ -42,20 +42,20 @@ class LeftPanel extends React.Component {
       <div className="left-panel">
         <p className="login">{icon()} {user.name}</p>
         <div className="button-set">
-          <button>Профиль</button>
-          <button>Выйти</button>
-          <button className="btn_full-length">+ Новый Проект</button>
+          <button>Profile</button>
+          <button>Log out</button>
+          <button className="btn_full-length">+ New Project</button>
         </div>
-        <div className="space-top">Проект:</div>
+        <div className="space-top">Project:</div>
         <div className="project-list">
           { this.renderList(this.props.projects) }
         </div>
         <div className="left-panel__links">
-          <a href="/contacts">Связь&nbsp;с&nbsp;администрацией</a>{" | "}
-          <a href="/about">Об&nbsp;организации</a>{" | "}
-          <a href="/help">Помощь</a>{" | "}
-          <a href="/privacy">Конфиденциальность</a>{" | "}
-          <a href="/rules">Правила</a>
+          <a href="/contacts">Message&nbsp;to&nbsp;administration</a>{" | "}
+          <a href="/about">About</a>{" | "}
+          <a href="/help">Help</a>{" | "}
+          <a href="/privacy">Privary</a>{" | "}
+          <a href="/rules">Rules</a>
         </div>
       </div>
     );

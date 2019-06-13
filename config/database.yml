@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  pool: <%= ENV['RAILS_MAX_THREADS'] { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  host: localhost
+  database: tracker-development
+  username: example_user
+  password: password
+
+test:
+  <<: *default
+  host: localhost
+  database: tracker-test
+  username: example_user
+  password: password
+
+production:
+  <<: *default
+  host: <% ENV['DATABASE_HOST'] {nil} %>
+  database: <% ENV['DATABASE_NAME'] {nil} %>
+  username: <% ENV['DATABASE_USER'] {nil} %>
+  password: <% ENV['DATABASE_PASSWORD'] {nil} %>

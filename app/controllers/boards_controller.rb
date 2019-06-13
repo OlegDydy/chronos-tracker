@@ -20,14 +20,15 @@ class BoardsController < ApplicationController
     @tasks = tasks(project_list)
   end
 
-private
+  private
+
   def projects(projects_list)
     projects_list.each_with_object({}) do |project, result|
       result[project.id] = {
         name: project.name,
         owner: project.owner_id,
         columns: project.column_ids,
-        isCustom: project.owner.type == Customer.class_name
+        isCustom: project.owner.type == Customer.name
       }
     end
   end

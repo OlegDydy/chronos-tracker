@@ -9,13 +9,13 @@ class NavBar extends React.Component {
           <span>ODEP</span>
         </a>
         <a href="/boards" className="nav-bar__tab selected">
-          Проекты
+          Projects
         </a>
         <a href="/statistics" className="nav-bar__tab">
-          Статистика
+          Statistics
         </a>
         <a href="/vacations" className="nav-bar__tab hidden">
-          Календарь отпусков
+          Vacations
         </a>
       </nav>
     );

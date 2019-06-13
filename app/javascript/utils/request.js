@@ -14,23 +14,35 @@ export function request(action, url, data) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open(action, url)
-    xhr.setRequestHeader('Content-Type', 'application/json')
+    if (data)
+      xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('X-CSRF-Param', CSRFParam)
     xhr.setRequestHeader('X-CSRF-Token', CSRF)
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState != 4) return undefined
-      
-      if (xhr.status === 200){
-        const obj = JSON.parse(xhr.responseText);
+      let obj = null;
+      try {
+        obj = JSON.parse(xhr.responseText);
         if (obj.status === 'ok')
           resolve(obj);
         else
           reject(obj);
+      } catch (error) {
+        // not json
+        reject({
+          status: 'ServerError',
+          httpStatus: xhr.status,
+          httpStatusText: xhr.statusText,
+          message: xhr.responseText
+        })
       }
-      else
-        reject(xhr.responseText || { status: xhr.status, error: xhr.statusText })
     }
-    xhr.send(JSON.stringify(data))
+    if (typeof data === 'object')
+      xhr.send(JSON.stringify(data))
+    else if (typeof data === 'string')
+      xhr.send(data)
+    else
+      xhr.send()
   })
 }

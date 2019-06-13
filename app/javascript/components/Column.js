@@ -18,7 +18,7 @@ class Column extends Component {
         <div className="board__column__list">
           { column.tasks.map( taskId => <Task key={taskId} taskId={taskId} />) }
         </div>
-        <div className="board__new-task" onClick={() => showModal(true)}>+ Новая Задача</div>
+        <div className="board__new-task" onClick={() => showModal(true)}>+ New Task</div>
         <Modal
           isOpen={modalShown} 
           onRequestClose={() => showModal(false)}

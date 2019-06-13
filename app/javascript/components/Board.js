@@ -16,14 +16,14 @@ class Board extends React.Component {
       <>
         <div className="board__title">
           <span className="board_action">{project.name}</span>
-          {
+          {/*
             project.owner == user.id
-            ? <span className="board_action">Новая задача</span>
+            ? <span className="board_action">New Task</span>
             : null
-          }
+          */}
           {
             project.isCustom
-            ? <span className="board_action">Чат с администрацией</span>
+            ? <span className="board_action">Chat</span>
             : null
           }
         </div>

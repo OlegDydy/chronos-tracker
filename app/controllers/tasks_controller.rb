@@ -12,16 +12,47 @@ class TasksController < ApplicationController
   # change specified project
   def edit
     permitted = permit_params
-    if permitted[:position].present?
-      Task.update_all('"position" = "position" + 1',
-                      column_id: column_id, position: permitted[:position]..Float::INFINITY)
+    unless permitted[:id]
+      render json: { status: :error, message: I18n.t('error.id_required') }
+      return
     end
+
     task = Task.find(permitted[:id])
-    if task.update(id, permitted)
-      render json: { status: :ok }
-    else
-      render json: task.errors, status: :unpocessable_entity
+
+    begin
+      if permitted[:column_id].present?
+        task.move_to_column permitted[:column_id], permitted[:position]
+        permitted.delete :position
+        permitted.delete :column_id
+      end
+    rescue ReorderError => e
+      render json: { status: :error, message: e.message }
+      return
     end
+
+    if permitted[:position].present?
+      task.reorder permitted[:position]
+      permitted.delete :position
+    end
+
+    if Task.update(permitted[:id], permitted)
+      render json: { status: :ok, data: render_task(task) }
+    else
+      render json: { status: :error, message: task.errors }, status: :unpocessable_entity
+    end
+  end
+
+  def archive
+    permitted = params.permit(:id)
+    unless permitted[:id].present?
+      render json: { status: :error, message: I18n.t('error.id_required') }
+      return
+    end
+
+    # test is user can archive this task i.e. task in project that user can change
+
+    Task.find(permitted[:id]).archive
+    render json: { status: :ok }
   end
 
   # create new project
@@ -34,17 +65,16 @@ class TasksController < ApplicationController
     return unless protect_column(column, project)
 
     permitted[:position] = column.tasks.count
-    byebug
-    permitted[:mark] = compactMarkers(permitted[:mark])
+    permitted[:mark] = compact_markers(permitted[:mark])
     task = Task.new permitted
     if task.save
-      render json: { status: :ok, data: renderTask(task) }
+      render json: { status: :ok, data: render_task(task) }
     else
       render json: task.errors, status: :unpocessable_entity
     end
   end
 
-  def renderTask(task)
+  def render_task(task)
     {
       id: task.id,
       position: task.position,
@@ -59,7 +89,8 @@ class TasksController < ApplicationController
   end
 
   private
-  def compactMarkers(markers)
+
+  def compact_markers(markers)
     result = 0
     markers.each do |mark|
       result |= 1 << mark
@@ -98,9 +129,9 @@ class TasksController < ApplicationController
   end
 
   def permit_params
-    params.require(:id).permit(
+    params.require(:task).permit(
       :id, :description, :position, :name,
-      :deadline, :column_id, :project_id, mark: []
+      :deadline, :column_id, mark: []
     )
   end
 end

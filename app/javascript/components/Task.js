@@ -4,9 +4,7 @@ import TaskModal from './modals/task_modal';
 import { connect } from 'react-redux';
 
 class Task extends Component {
-  state = {
-    modalShown: false
-  }
+  state = {modalShown: false}
 
   showModal = value => {
     this.setState({
@@ -17,12 +15,14 @@ class Task extends Component {
   render() {
     const { taskId, tasks } = this.props;
     const { modalShown } = this.state;
-    const { showModal, hideModal } = this;
+    const { showModal } = this;
     const task = tasks[taskId];
     return (
-      <div className="board__card" key={ task.id } onClick={() => showModal(true)}>
-        <div className="priority-marks"></div>
-        {task.name}
+      <>
+        <div className="board__card" key={ task.id } onClick={() => showModal(true)}>
+          <div className="priority-marks"></div>
+          {task.name}
+        </div>
         <Modal
           isOpen={modalShown} 
           onRequestClose={() => showModal(false)}
@@ -33,7 +33,7 @@ class Task extends Component {
         >
           <TaskModal taskId={taskId} closeModal={() => showModal(false)} />
         </Modal>
-      </div>
+      </>
     );
   }
 }

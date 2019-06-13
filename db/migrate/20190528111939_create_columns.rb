@@ -8,6 +8,6 @@ class CreateColumns < ActiveRecord::Migration[5.2]
       t.timestamps
     end
     add_index :columns, :name
-    add_index :tasks, [:project_id, :position], :unique => true
+    add_index :columns, [:project_id, :position], :unique => true
   end
 end

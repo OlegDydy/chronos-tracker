@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 Rails.application.routes.draw do
   resources :activity_periods
   resources :columns
@@ -17,5 +16,5 @@ Rails.application.routes.draw do
   resources :projects
   get '/', to: 'boards#index', as: :default
   get '/boards', to: 'boards#index', as: :user_root
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  post '/tasks/:id/archive', to: 'tasks#archive'
 end

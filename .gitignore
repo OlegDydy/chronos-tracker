@@ -56,7 +56,7 @@ build-iPhoneSimulator/
 yarn-debug.log*
 .yarn-integrity
 
-/config/database.yml
 *.log
 /app/assets/fonts
 .byebug_history
+.env

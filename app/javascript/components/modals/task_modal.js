@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Archive from '../icons/archive';
 import { connect } from 'react-redux';
-import { createTask } from '../../actions/task';
+import { createTask, archiveTask } from '../../actions/task';
 
 const ruleText = `
 .comment__text-edit.placeholder::before {
   position: absolute;
   content: 'Write comment…';
   color: darkgray;
+  cursor: text;
 }
 `;
 const id = document.styleSheets[0].insertRule(ruleText);
@@ -136,6 +137,11 @@ class TaskModal extends Component {
     )
   }
 
+  archive = () => {
+    const { taskId, archive, closeModal } = this.props;
+    archive(this.state.column, taskId, closeModal);
+  }
+  
   render() {
     const { columns, user, projects, closeModal } = this.props;
     const { name, description, edit, isNew, column, project } = this.state;
@@ -146,7 +152,8 @@ class TaskModal extends Component {
       handleBlur,
       editDescription,
       editTitle,
-      showComments
+      showComments,
+      archive
     } = this
     const clearDescription = clearHTML(description).replace(/\n/g,'<br>');
     const disabled = name.length == 0;
@@ -205,7 +212,7 @@ class TaskModal extends Component {
           <h2>Tools:</h2>
           {
             isNew ? null
-            : (<button className="card-modal__tool long"><Archive /> Archive</button>)
+            : (<button className="card-modal__tool long" onClick={archive}><Archive /> Archive</button>)
           }
           {
             user.id === projects[project].owner ? (
@@ -239,7 +246,8 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    createTask: task => dispatch(createTask(task))
+    createTask: task => dispatch(createTask(task)),
+    archive: (columnId, taskId, callback) => dispatch(archiveTask(columnId, taskId, callback))
   }
 }
 

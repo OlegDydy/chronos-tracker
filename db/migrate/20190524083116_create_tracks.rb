@@ -7,6 +7,6 @@ class CreateTracks < ActiveRecord::Migration[5.2]
       t.timestamps
     end
     add_index :tracks, :worker_id
-    add_index :tracks, :track_id
+    add_index :tracks, :task_id
   end
 end
