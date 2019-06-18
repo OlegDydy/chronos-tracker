@@ -18,6 +18,7 @@ gem 'pg', '~> 1.1'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.3'
 gem 'react-rails', '~> 2.5'
+gem 'rubocop-rails'
 gem 'sassc-rails', '~> 2.1', '>= 2.1.1'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
@@ -30,6 +31,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'solargraph'
   gem 'web-console', '>= 3.3.0'
 end
 

@@ -14,6 +14,7 @@ class TasksController < ApplicationController
       return
     end
 
+    # @type [Task]
     task = Task.find(permitted[:id])
 
     begin
@@ -55,9 +56,11 @@ class TasksController < ApplicationController
   # create new task
   def create
     permitted = params.require(:task).permit(:name, :project_id, :column_id, :description, mark: [])
+    # @type [Project]
     project = Project.find(permitted[:project_id])
     return unless protect_project(project)
 
+    # @type [Column]
     column = Column.find(permitted[:column_id])
     return unless protect_column(column, project)
 
