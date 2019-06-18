@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!
+  identified_by :current_user
 
   # list of all avaliable projects
   def index; end
