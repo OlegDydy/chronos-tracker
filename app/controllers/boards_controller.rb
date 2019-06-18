@@ -27,7 +27,7 @@ class BoardsController < ApplicationController
       result[project.id] = {
         name: project.name,
         owner: project.owner_id,
-        columns: project.column_ids,
+        columns: project.columns.order(:position).map(&:id),
         isCustom: project.owner.type == Customer.name
       }
     end
@@ -38,7 +38,7 @@ class BoardsController < ApplicationController
       result[column.id] = {
         projectId: column.project_id,
         name: column.name,
-        tasks: column.task_ids
+        tasks: column.tasks.order(:position).map(&:id)
       }
     end
   end

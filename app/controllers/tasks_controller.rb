@@ -3,14 +3,11 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
 
-  # list of all avaliable projects
   def index; end
 
-  # one specified project
   def show; end
 
-  # change specified project
-  def edit
+  def update
     permitted = permit_params
     unless permitted[:id]
       render json: { status: :error, message: I18n.t('error.id_required') }
@@ -35,7 +32,7 @@ class TasksController < ApplicationController
       permitted.delete :position
     end
 
-    if Task.update(permitted[:id], permitted)
+    if task.update(permitted)
       render json: { status: :ok, data: render_task(task) }
     else
       render json: { status: :error, message: task.errors }, status: :unpocessable_entity
@@ -55,7 +52,7 @@ class TasksController < ApplicationController
     render json: { status: :ok }
   end
 
-  # create new project
+  # create new task
   def create
     permitted = params.require(:task).permit(:name, :project_id, :column_id, :description, mark: [])
     project = Project.find(permitted[:project_id])
@@ -129,7 +126,7 @@ class TasksController < ApplicationController
   end
 
   def permit_params
-    params.require(:task).permit(
+    params.permit(
       :id, :description, :position, :name,
       :deadline, :column_id, mark: []
     )

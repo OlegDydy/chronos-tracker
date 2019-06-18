@@ -2,7 +2,10 @@
 export const METHOD = {
   GET: 'GET',
   POST: 'POST',
-  PUT: 'PUT'
+  PUT: 'PUT',
+  UPDATE: 'PATCH',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE'
 }
 
 const CSRFParam = document.getElementsByName('csrf-param')[0].content;
@@ -14,7 +17,7 @@ export function request(action, url, data) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open(action, url)
-    if (data)
+    if (typeof data === 'object')
       xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('X-CSRF-Param', CSRFParam)
     xhr.setRequestHeader('X-CSRF-Token', CSRF)

@@ -7,18 +7,13 @@ export default function tasks(state = initialState, action) {
     case actions.INIT_TASKS:
       return action.tasks;
     case actions.CREATE_TASK_SUCCESS:
+    case actions.ARCHIVE_TASK_SUCCESS:
+    case actions.UPDATE_TASK_SUCCESS:
       return {
         ...state,
         [action.id]: action.task
-      }
-    case actions.ARCHIVE_TASK_SUCCESS:{
-      const nextState = {
-        ...state,
-        [action.id]: action.task
-      }
-      delete nextState[action.id]
-      return nextState;
-    }
+      };
+    case actions.UPDATE_TASK_ERROR:
     case actions.ARCHIVE_TASK_ERROR:
     case actions.CREATE_TASK_ERROR:
       alert(action.message)

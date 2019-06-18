@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Archive from '../icons/archive';
 import { connect } from 'react-redux';
-import { createTask, archiveTask } from '../../actions/task';
+import { createTask, archiveTask, updateTask } from '../../actions/task';
 
 const ruleText = `
 .comment__text-edit.placeholder::before {
@@ -17,6 +17,50 @@ const id = document.styleSheets[0].insertRule(ruleText);
 
 function clearHTML(str){
   return str.replace(/<br>/g,'\n').replace(/<\/?\w+.*?>/g, '').trim();
+}
+
+function markdown(str){
+  const ul_li = /(?:^|\n|>)\* (.*)/g;
+  const ol_li = /(?:^|\n|>)\d+\.? (.*)/g;
+
+  const bold = /\*(.*?)\*/g;
+  const italic = /_(.*?)_/g;
+  const ul = new RegExp(`(:?${ul_li.source})+\n?`,'g');
+  const ol = new RegExp(`(:?${ol_li.source})+\n?`,'g');
+  const inlineSource = new RegExp(`\`((?:\\\`|[^\\0])*?)\``,'g');
+  const source = new RegExp(`((?:^|\\n)\x20{4}.*)+`,'g');
+  const header = /(?:^|\n|>)(#+) (.*)/g;
+  const header1 = /(.*)\n={3,}(?:\n|$|(?=<))/g;
+  const header2 = /(.*)\n-{3,}(?:\n|$|(?=<))/g;
+  const quote = /&lt; (.*)/g;
+  const link = /\[(.*?)\]\(([^\s]+?)(?: +"(.*?)")?\)/g;
+  const autodetect = /((\w+:\/\/)[-\w:@;?&=\/%\+\.\*!'\(\),\$_\{\}\^~\[\]`#|]+)/g;
+
+  const result = str
+    .replace(header, (_, level, text) => (_[0] === '>' ? '>' : '') + `<h${level.length} class="header-${level.length}">${text}</h${level.length}>`)
+    .replace(header1, '<h1 class="header-1">$1</h1>')
+    .replace(header2, '<h2 class="header-2">$1</h2>')
+    .replace(bold, '<strong class="bold">$1</strong>')
+    .replace(italic, '<i class="italic">$1</i>')
+    .replace(ul, match => {
+      let close = match[0] === '>' ? '>' : '';
+      return close + '<ul class="marked-list marked-list--style-1">' + match.replace(ul_li, '<li>$1</li>') + "</ul>"
+    })
+    .replace(ol, match => {
+      let close = match[0] === '>' ? '>' : '';
+      return close + '<ol class="marked-list marked-list--style-1">' + match.replace(ol_li, '<li>$1</li>') + "</ol>"
+    })
+    .replace(inlineSource, (_, source) => `<span class="source-code source-code--inline">${source.replace(/\\`/g, '`')}</span>`)
+    .replace(source, match => `<pre class="source-code">${match.replace(/(?:\n|^)\x20{4}/g, '\n').substr(1)}</pre>`)
+    .replace(quote, '<h1>$1</h1>')
+    .replace(link, (_, text, url, title)=> {
+      if (typeof title == 'string')
+        return `<a class="link link--with-title" href="${encodeURI(url.trim())}" title="${title.replace(/"/g, '&quot;')}">${text}</a>`
+      return `<a class="link" href="${encodeURI(url.trim())}">${text}</a>`
+    })
+    .replace(autodetect, '<a class="link" href"$&">$&</a>')
+    .replace(/\n/g, '<br>');
+  return result;
 }
 
 class TaskModal extends Component {
@@ -112,6 +156,24 @@ class TaskModal extends Component {
   }
 
   handleBlur = () => {
+    const { updateTask } = this.props;
+    
+    if (!this.state.isNew){
+      switch (this.state.edit) {
+      case 'title':
+        updateTask({
+          id: this.state.task,
+          name: this.state.name
+        });
+        break;
+      case 'description':
+        updateTask({
+          id: this.state.task,
+          description: this.state.description
+        });
+        break;
+      }
+    }
     this.setState({
       edit: null
     })
@@ -155,7 +217,7 @@ class TaskModal extends Component {
       showComments,
       archive
     } = this
-    const clearDescription = clearHTML(description).replace(/\n/g,'<br>');
+    const clearDescription = markdown(clearHTML(description));
     const disabled = name.length == 0;
     return  (
       <div className="card-modal">
@@ -247,7 +309,8 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = dispatch => {
   return {
     createTask: task => dispatch(createTask(task)),
-    archive: (columnId, taskId, callback) => dispatch(archiveTask(columnId, taskId, callback))
+    archive: (columnId, taskId, callback) => dispatch(archiveTask(columnId, taskId, callback)),
+    updateTask: task => dispatch(updateTask(task))
   }
 }
 

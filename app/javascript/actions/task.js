@@ -1,7 +1,7 @@
 import * as actions from '../constants/actions/task';
 import { COLUMN_INSERT_TASK, COLUMN_REMOVE_TASK } from '../constants/actions/column';
 import { TASK_MODAL } from '../constants/actions/ui';
-import { request } from '../utils/request';
+import { request, METHOD } from '../utils/request';
 
 export function initTasks(tasks){
   return {
@@ -16,7 +16,7 @@ export function createTask(task){
       type: actions.CREATE_TASK_REQUEST
     })
 
-    request('POST', '/tasks', task).then(
+    request(METHOD.POST, '/tasks', task).then(
       res => {
           dispatch({
             type: actions.CREATE_TASK_SUCCESS,
@@ -43,22 +43,14 @@ export function createTask(task){
   }
 }
 
-export function renameTask(taskID, name) {
-  return {
-    type: actions.RENAME_TASK_SUCCESS,
-    task_id: taskID,
-    name
-  }
-}
-
 export function archiveTask(columnId, taskId, closeModal) {
   return dispatch => {
     dispatch({
       type: actions.ARCHIVE_TASK_REQUEST
     })
 
-    request('POST', `/tasks/${taskId}/archive`, {}).then(
-      res => {
+    request(METHOD.POST, `/tasks/${taskId}/archive`, {}).then(
+      () => {
           dispatch({
             type: COLUMN_REMOVE_TASK,
             taskId: taskId,
@@ -73,6 +65,30 @@ export function archiveTask(columnId, taskId, closeModal) {
       err => 
         dispatch({
           type: actions.ARCHIVE_TASK_ERROR,
+          message: err
+        })
+    )
+  }
+}
+
+export function updateTask(task) {
+  return dispatch => {
+    dispatch({
+      type: actions.UPDATE_TASK_REQUEST
+    });
+    const id = task.id;
+    delete task.id;
+    request(METHOD.PATCH, `/tasks/${id}`, task).then(
+      res => 
+        dispatch({
+          type: actions.UPDATE_TASK_SUCCESS,
+          id: res.data.id,
+          position: res.data.position,
+          task: res.data.task
+        }),
+      err => 
+        dispatch({
+          type: actions.UPDATE_TASK_ERROR,
           message: err
         })
     )
