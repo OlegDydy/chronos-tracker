@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal';
+import Trash from "./icons/trash";
 import { connect } from 'react-redux';
 import { showTaskModal } from '../actions/ui';
+import { deleteColumn } from "../actions/column";
 import Task from './Task';
 import TaskModal from './modals/task_modal';
 
@@ -9,16 +11,19 @@ Modal.setAppElement('#App')
 
 class Column extends Component {
   render() {
-    const { columns, columnId, showModal, modalShown } = this.props;
+    const { columns, columnId, showModal, modalShown, deleteColumn } = this.props;
     const column = columns[columnId];
     if (!column) return null;
     return (
-      <div className="board__column">
-        <div className="board__column__title">{ column.name }</div>
-        <div className="board__column__list">
+      <div className="column">
+        <div className="column__title">
+          { column.name }
+          <Trash className="column__delete" onClick={() => deleteColumn(columnId, column)} />
+        </div>
+        <div className="column__list">
           { column.tasks.map( taskId => <Task key={taskId} taskId={taskId} />) }
         </div>
-        <div className="board__new-task" onClick={() => showModal(true)}>+ New Task</div>
+        <div className="column__new-task" onClick={() => showModal(true)}>+ New Task</div>
         <Modal
           isOpen={modalShown} 
           onRequestClose={() => showModal(false)}
@@ -41,7 +46,8 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    showModal: task => dispatch(showTaskModal(task))
+    showModal: task => dispatch(showTaskModal(task)),
+    deleteColumn: (columnId, column) => dispatch(deleteColumn(columnId, column))
   }
 }
 

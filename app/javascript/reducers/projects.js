@@ -28,6 +28,17 @@ export default function projects(state = initialState, action) {
       result[action.id].name = action.name;
       return result;
     }
+    case actions.INSERT_COLUMN_PROJECT: {
+      const nextState = { ...state };
+      nextState[action.id].columns.splice(action.position, 0, action.columnId)
+      return nextState;
+    }
+    case actions.DELETE_COLUMN_PROJECT: {
+      const nextState = { ...state };
+      project = nextState[action.id];
+      project.columns.splice(project.columns.findIndex(i => i === action.columnId), 1);
+      return nextState;
+    }
     case actions.FREEZE_PROJECT:{
       const result = {
         ...state

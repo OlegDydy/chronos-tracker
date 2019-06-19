@@ -1,15 +1,59 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from "react";
 import { connect } from "react-redux";
+import ContentEditable from "react-contenteditable";
 import Column from "./Column";
-class Board extends React.Component {
+import { createColumn } from "../actions/column";
+import Cross from "./icons/times";
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log('updated')
+class Board extends React.Component {
+  state = {
+    newColumnName: '',
+    editing: false
+  }
+
+  componentDidMount(){
+    document.addEventListener('keydown', this.handleEscape);
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('keydown', this.handleEscape);
+  }
+
+  handleEscape = e =>{
+    if (e.key === 'Escape')
+      this.showEditing(false);
+  }
+
+  componentDidUpdate(){
+    if (this.state.editing)
+      this.refs.entry.focus();
+  }
+
+  handleChange = e => {
+    this.setState({
+      newColumnName: e.target.value
+    })
+  }
+
+  showEditing = (value) => {
+    if (value){
+      this.setState({
+        editing: true
+      })
+    }
+    else {
+      this.setState({
+        editing: false,
+        newColumnName: ''
+      })
+    }
   }
 
   render () {
-    const { projectId, user, projects } = this.props;
+    const { projectId, user, projects, createColumn } = this.props;
+    const { newColumnName, editing } = this.state;
+    const { handleChange, showEditing } = this;
+
     const project = projects[projectId];
     if (!project) return null;
     return (
@@ -29,6 +73,28 @@ class Board extends React.Component {
         </div>
         <div className="board__body">
           { project.columns.map( columnId => (<Column key={columnId} columnId={columnId} />)) }
+          <div
+            className={'column column_new' + (editing ? ' editing' : '')}
+            onClick={editing ? null : () => showEditing(true)}
+          >
+            {
+              editing
+                ? (
+                  <>
+                    <input
+                      className="column__new-entry"
+                      value={newColumnName}
+                      ref="entry"
+                      placeholder="New Column Name"
+                      onChange={handleChange}
+                    />
+                    <button className="secondary" onClick={() => createColumn(projectId, newColumnName, () => showEditing(false))}>Add</button>
+                    <Cross className="column__close" onClick={() => showEditing(false)} />
+                  </>
+                ) //on blur
+                : (<span className="column__new-label">+ New Column</span>)
+            }
+          </div>
         </div>
       </>
     )
@@ -37,6 +103,12 @@ class Board extends React.Component {
 
 const mapStateToProps = store => ({
   projects: store.projects
-})
+});
 
-export default connect(mapStateToProps)(Board)
+const mapDispatchToProps = dispatch => {
+  return {
+    createColumn: (project, name, resetFocus) => dispatch(createColumn(project, name, resetFocus))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board)

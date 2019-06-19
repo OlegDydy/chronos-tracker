@@ -18,3 +18,4 @@ Style/Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
+require: rubocop-rails

@@ -34,45 +34,6 @@ $title_height: 45px;
     overflow-y: auto;
   }
 
-  &__new-task {
-    width: 100%;
-    padding: 0.4rem;
-    color: $accent2;
-    cursor: pointer;
-    font-weight: bold;
-
-    :hover {
-      text-decoration: underline;
-      background-color: $black20;
-    }
-  }
-
-  &__column {
-    display: inline-block;
-    width: 300px;
-    background-color: $base1;
-    margin: 0 0.2rem;
-    max-height: calc(100% - 0.5rem);
-    box-sizing: border-box;
-    border-radius: 0.3rem;
-    color: $accent2;
-    overflow: hidden;
-    vertical-align: top;
-    padding: 0.5rem;
-
-    &__list {
-      overflow-y: auto;
-    }
-
-    &__title {
-      font-weight: bold;
-    }
-
-    &:last-child {
-      margin-right: 0.5rem;
-    }
-  }
-
   &__card {
     border-radius: 0.3rem;
     padding: 0.3rem;
@@ -92,6 +53,98 @@ $title_height: 45px;
       transform: rotate(5deg);
       box-shadow: 2px 2px 5px;
     }
+  }
+}
+
+.column {
+  display: inline-block;
+  width: 300px;
+  background-color: $base1;
+  margin: 0 0.2rem;
+  max-height: calc(100% - 0.5rem);
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+  color: $accent2;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.5rem;
+
+  &__list {
+    overflow-y: auto;
+  }
+
+  &__title {
+    position: relative;
+    font-weight: bold;
+    padding: 8px 0;
+  }
+
+  &__delete {
+    position: absolute;
+    right: 0px;
+    fill: white;
+    transition: fill 0.5s ease;
+    cursor: pointer;
+
+    :hover{
+      fill: lightgray;
+    }
+  }
+
+  &__new-task {
+    width: 100%;
+    padding: 0.4rem;
+    color: $accent2;
+    cursor: pointer;
+    font-weight: bold;
+
+    :hover {
+      text-decoration: underline;
+      background-color: $black20;
+    }
+  }
+  
+  &_new {
+    position: relative;
+    height: calc(1.1872em + 16px);
+    color: white;
+    background-color: $black10;
+    transition: background-color 0.5s ease, height 0.5s ease;
+
+    &:hover {
+      background-color: $black20;
+    }
+
+    &.editing {
+      background-color: $base1;
+      height: calc(2.375em + 2 * (16px + 3px) + 16px + 0.4rem);
+    }
+  }
+
+  &__new-label {
+    user-select: none;
+  }
+
+  &__new-entry {
+    display: block;
+    width: 100%;
+    border: 3px solid $base2;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: "Helvetica", Arial, sans-serif;
+  }
+
+  &__close {
+    height: 1.2em;
+    margin-left: 7px;
+    vertical-align: text-top;
+    fill: $accent2;
+  }
+
+  &:last-child {
+    margin-right: 0.5rem;
   }
 }
 

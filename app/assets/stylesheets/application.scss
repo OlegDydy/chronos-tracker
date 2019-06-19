@@ -21,9 +21,13 @@
 @import './components/left_panel.scss';
 @import './components/nav_bar.scss';
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Helvetica', Arial, sans-serif;
 }
 
 .modal-overlay {
@@ -56,11 +60,11 @@ a {
 
 button, input[type='submit'], input[type='button']{
   background-color: $accent1;
-  padding: 0.1rem 1rem;
+  padding: 8px 15px;
   color: $accent2;
-  border: 1px solid $border;
+  border: none;
   border-radius: 0.4rem;
-  font-size: 12pt;
+  font-size: 16px;
   margin: 0.2rem;
 
 
@@ -71,11 +75,12 @@ button, input[type='submit'], input[type='button']{
   &:active {
     background-color: $accent3;
   }
-
-  &:focus {
-    border-color: $accent4;
-  }
 }
+
+.secondary {
+  background-color: $accent3;
+}
+
 .btn_full-length {
   width: 100%;
 }
