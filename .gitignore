@@ -60,3 +60,5 @@ yarn-debug.log*
 /app/assets/fonts
 .byebug_history
 .env
+
+*.lock
