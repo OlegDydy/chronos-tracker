@@ -20,7 +20,8 @@ class Task extends Component {
   }
 
   dragStart = e => {
-    const { taskId, tasks } = this.props;
+    const { taskId, tasks, hideSelf } = this.props;
+    hideSelf();
     const task = tasks[taskId];
     e.dataTransfer.setData('application/json',`{"type":"task","id":${taskId},"columnId":${task.columnId}}`);
     e.dataTransfer.effectAllowed = 'move';
@@ -35,11 +36,10 @@ class Task extends Component {
   }
 
   render() {
-    const { taskId, tasks } = this.props;
-    const { modalShown, dragged, X, Y } = this.state;
+    const { taskId, tasks, style } = this.props;
+    const { modalShown } = this.state;
     const { showModal, dragStart, dragMove, dragEnd } = this;
     const task = tasks[taskId];
-    let style = dragged ? { position: 'fixed', left: X, top: Y } : null;
     return (
       <>
         <div

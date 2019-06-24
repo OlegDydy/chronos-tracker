@@ -12,32 +12,48 @@ Modal.setAppElement('#App')
 
 class Column extends Component {
   state = {
-    insertPlace: null
+    insertPlace: null,
+    hiddenTask: null
   }
 
   dragOver = e => {
-    if(e.dataTransfer.types[0] === 'application/json'){
+    const allowed = e.dataTransfer.types[0] === 'application/json';
+    const data = [allowed];
+    if(allowed){
       const {columns, columnId} = this.props;
       const { list } = this.refs;
       e.preventDefault();
-      
+
+      const bounds = Array.prototype.filter
+        .call(list.children, i => i.style.display !== 'none')
+        .map( i => i.getBoundingClientRect())
+
       let i = 0;
-      for (; i < list.children.length; i++) {
-        const rect = list.children[i].getBoundingClientRect();
-        if (e.clientY < rect.y) break;
+      for (; i < bounds.length; i++) {
+        if (e.clientY < bounds[i].y + bounds[i].height) break;
       }
+      data.push(i, e.clientY, bounds.map(i => i.y + i.height))
       if (i > columns[columnId].length) i = columns[columnId].length1;
+      if (i < 0) i = 0;
+
       this.setState({
         insertPlace: i
       })
 
-      //console.log( x, y );
+      console.log.apply(console, data);
     }
   }
 
   dragLeave = e => {
     this.setState({
-      insertPlace: null
+      insertPlace: null,
+      hiddenTask: null
+    })
+  }
+
+  hideTask = id => {
+    this.setState({
+      hiddenTask: id
     })
   }
 
@@ -52,13 +68,22 @@ class Column extends Component {
     }
     updateTask(task, column.tasks.findIndex(i => i === descTask.id), descTask.columnId);
     this.setState({
-      insertPlace: null
+      insertPlace: null,
+      hiddenTask: null
     })
-    //action
   }
 
-  renderList(column) {
-    return column.tasks.map(taskId => (<Task key={taskId} taskId={taskId} />));
+  renderList = column => {
+    const { hideTask } = this;
+    const { hiddenTask } = this.state;
+    return column.tasks.map((taskId, index) => (
+      <Task
+        key={taskId}
+        taskId={taskId}
+        style={{ display: hiddenTask === index ? 'none' : null }}
+        hideSelf={() => hideTask(index)}
+      />
+    ));
   }
 
   render() {
@@ -71,7 +96,7 @@ class Column extends Component {
     const list = renderList(column);
     if (insertPlace !== null)
       list.splice(insertPlace, 0, (
-        <div key="__ghost__" className="board__card board__card_ghost" />
+        <div key="__ghost__" className="board__card board__card_ghost" onDragOver={this.dragOver} />
       ));
 
     return (

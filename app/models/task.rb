@@ -44,7 +44,7 @@ class Task < ApplicationRecord
   end
 
   def move_to_column(new_column, new_position)
-    raise ReorderError, I18n.t('error.no_column', id: new_column) if Column.exists?(new_column)
+    raise ReorderError, I18n.t('error.no_column', id: new_column) unless Column.exists?(new_column)
 
     if new_column == column_id
       reorder(new_position)

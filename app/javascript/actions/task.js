@@ -80,17 +80,17 @@ export function updateTask(task, position, columnId) {
     delete task.id;
     request(METHOD.PATCH, `/tasks/${id}`, task).then(
       res => {
-        if (res.data.position != position || res.data.columnId != columnId){
+        if (res.data.position != position || res.data.task.columnId != columnId){
           dispatch({
-            typs: COLUMN_REMOVE_TASK,
-            taskId: res.id,
+            type: COLUMN_REMOVE_TASK,
+            taskId: res.data.id,
             column: columnId
           });
           dispatch({
-            typs: COLUMN_INSERT_TASK,
-            task: res.id,
-            column: res.task.columnId,
-            position: res.position
+            type: COLUMN_INSERT_TASK,
+            task: res.data.id,
+            column: res.data.task.columnId,
+            position: res.data.position
           })
         }
         dispatch({
