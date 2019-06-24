@@ -46,6 +46,7 @@ $title_height: 45px;
 
     &_ghost {
       background-color: $black20;
+      height: 28px;
     }
 
     &_grabbed {
@@ -86,7 +87,7 @@ $title_height: 45px;
     transition: fill 0.5s ease;
     cursor: pointer;
 
-    :hover{
+    &:hover{
       fill: lightgray;
     }
   }

@@ -71,7 +71,7 @@ export function archiveTask(columnId, taskId, closeModal) {
   }
 }
 
-export function updateTask(task) {
+export function updateTask(task, position, columnId) {
   return dispatch => {
     dispatch({
       type: actions.UPDATE_TASK_REQUEST
@@ -79,13 +79,27 @@ export function updateTask(task) {
     const id = task.id;
     delete task.id;
     request(METHOD.PATCH, `/tasks/${id}`, task).then(
-      res => 
+      res => {
+        if (res.data.position != position || res.data.columnId != columnId){
+          dispatch({
+            typs: COLUMN_REMOVE_TASK,
+            taskId: res.id,
+            column: columnId
+          });
+          dispatch({
+            typs: COLUMN_INSERT_TASK,
+            task: res.id,
+            column: res.task.columnId,
+            position: res.position
+          })
+        }
         dispatch({
           type: actions.UPDATE_TASK_SUCCESS,
           id: res.data.id,
           position: res.data.position,
           task: res.data.task
-        }),
+        })
+      },
       err => 
         dispatch({
           type: actions.UPDATE_TASK_ERROR,
