@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import NavBar from "./NavBar";
 import LeftPanel from "./LeftPanel";
 import Board from "./Board";
+import Timer from "./Timer";
 
 class Tracker extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class Tracker extends Component {
             <Board user={user} projectId={projectId}  />
           </div>
         </div>
+        <Timer />
       </>
     );
   }

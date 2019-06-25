@@ -56,11 +56,17 @@ class BoardsController < ApplicationController
   end
 
   def user
+    track = ActivityPeriod.joins(track: [:worker])
+                          .where(tracks: { worker_id: current_user.id }, end: nil)
+                          .first
+    track_json = nil
+    track_json = { id: track.track_id, begin: track.begin, name: track.track.task.name } if track
     {
       id: current_user.id,
       name: current_user.name,
       email: current_user.email,
-      type: current_user.class.name
+      type: current_user.class.name,
+      track: track_json
     }
   end
 end

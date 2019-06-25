@@ -85,14 +85,14 @@ class Column extends Component {
       />
     ));
   }
-
+  
   render() {
     const { columns, columnId, showModal, modalShown, deleteColumn } = this.props;
     const { insertPlace } = this.state;
     const { dragOver, handleDrop, dragLeave, renderList } = this;
     const column = columns[columnId];
     if (!column) return null;
-
+    
     const list = renderList(column);
     if (insertPlace !== null)
       list.splice(insertPlace, 0, (

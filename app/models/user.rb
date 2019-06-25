@@ -8,4 +8,4 @@ class User < ApplicationRecord
          :confirmable, :trackable
   has_many :comments, class_name: 'Comment', as: :commentable
   has_many :my_projects, class_name: 'Project', foreign_key: 'owner_id'
-end
+ end
