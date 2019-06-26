@@ -28,7 +28,8 @@ class BoardsController < ApplicationController
         name: project.name,
         owner: project.owner_id,
         columns: project.columns.order(:position).map(&:id),
-        isCustom: project.owner.type == Customer.name
+        isCustom: project.owner.type == Customer.name,
+        statistics: project.statistics
       }
     end
   end
@@ -60,7 +61,14 @@ class BoardsController < ApplicationController
                           .where(tracks: { worker_id: current_user.id }, end: nil)
                           .first
     track_json = nil
-    track_json = { id: track.track_id, begin: track.begin, name: track.track.task.name } if track
+    if track
+      track_json = {
+        id: track.track_id,
+        begin: track.begin,
+        name: track.track.task.name,
+        taskId: track.track.task_id
+      }
+    end
     {
       id: current_user.id,
       name: current_user.name,

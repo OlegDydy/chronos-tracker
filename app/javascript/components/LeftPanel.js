@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux";
 import iterate from "../utils/iterate";
+import {request, METHOD} from "../utils/request";
 
 function icon(){
   return (
@@ -36,26 +37,35 @@ class LeftPanel extends React.Component {
     })
   }
 
+  logout = () => {
+    request(METHOD.DELETE, '/users/sign_out')
+    location.pathname ='/users/sign_in';
+  }
+
   render () {
     const user = this.props.user;
     return (
       <div className="left-panel">
-        <p className="login">{icon()} {user.name}</p>
+        <p className="profile">{icon()} {user.name}</p>
         <div className="button-set">
-          <button>Profile</button>
-          <button>Log out</button>
-          <button className="btn_full-length">+ New Project</button>
+          <button>Профиль</button>
+          <button onClick={this.logout} >Выйти</button>
+          {
+            user.type !== 'Worker' 
+              ? (<button className="btn_full-length">+ Новый проект</button>)
+              : null
+          }
         </div>
-        <div className="space-top">Project:</div>
+        <div className="space-top">Проект:</div>
         <div className="project-list">
           { this.renderList(this.props.projects) }
         </div>
         <div className="left-panel__links">
-          <a href="/contacts">Message&nbsp;to&nbsp;administration</a>{" | "}
-          <a href="/about">About</a>{" | "}
-          <a href="/help">Help</a>{" | "}
-          <a href="/privacy">Privary</a>{" | "}
-          <a href="/rules">Rules</a>
+          <a href="/contacts">Связь&nbsp;с&nbsp;администрацией</a>{" | "}
+          <a href="/about">О&nbsp;программе</a>{" | "}
+          <a href="/help">Помощь</a>{" | "}
+          <a href="/privacy">Конфиденсиальность</a>{" | "}
+          <a href="/rules">Правила</a>
         </div>
       </div>
     );
@@ -63,7 +73,8 @@ class LeftPanel extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  projects: store.projects
+  projects: store.projects,
+  user: store.user
 })
 
 export default connect(mapStateToProps)(LeftPanel)

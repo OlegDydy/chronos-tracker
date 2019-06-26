@@ -1,4 +1,28 @@
 import * as actions from '../constants/actions/project'
+import { request, METHOD } from "../utils/request";
+
+export function loadStatistics(projectId){
+  return dispatch => {
+    dispatch({
+      type: actions.LOAD_STATISTICS_REQUEST
+    });
+
+    request(METHOD.GET, `/project/${projectId}/statistics`).then(
+      res => {
+        dispatch({
+          type: actions.LOAD_STATISTICS_STATS,
+          statistics: res.statistics
+        });
+      },
+      err => {
+        dispatch({
+          type: actions.LOAD_STATISTICS_ERROR,
+          message: JSON.stringify(err)
+        });
+      }
+    )
+  }
+}
 
 export function initProjects(projects){
   return {

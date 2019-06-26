@@ -1,34 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { stopTrack } from "../actions/user";
 
 class Timer extends Component {
-  state = {
-    timer: null,
-    update: 0
-  };
+  timer = null;
   
-  componentDidMount(){
-    if (this.props.track)
-      this.setState({timer: setInterval(this.update, 100)});
+  constructor(props){
+    super(props);
+
+    this.timer = setInterval(() => this.forceUpdate(), 100);
   }
 
   update = () => {
     this.setState({update: !this.state.update});
   }
-  /*
-  componentDidUpdate(prevProps, prevState, snapshot){
-    if (!props.track){
-      clearInterval(this.timer)
-      this.timer = null;
-    }
-    else{
-      if (this.timer == null)
-        this.timer = setInterval(this.update, 100);
-    }
-  }
-*/
+
   render() {
-    const { track } = this.props;
+    const { track, stopTrack } = this.props;
     if (!track) return null;
     let s = ~~((new Date() - new Date(track.begin)) / 1000);
     let m = ~~(s / 60); s %= 60;
@@ -37,7 +25,7 @@ class Timer extends Component {
         <h3>{track.name}</h3>
         <i className="far fa-clock"></i>
         <span>{m}:{s < 10 ? '0' + s : s}</span>
-        <button className="timer__button">Stop</button>
+        <button className="timer__button" onClick={() => stopTrack(track.id)}>Остановить</button>
       </div>
     )
   }
@@ -47,4 +35,8 @@ const mapStateToProps = store => ({
   track: store.user.track
 })
 
-export default connect(mapStateToProps)(Timer);
+const mapDispatchToProps = dispatch => ({
+  stopTrack: trackId => dispatch(stopTrack(trackId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

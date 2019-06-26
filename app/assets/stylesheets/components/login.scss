@@ -1,0 +1,52 @@
+
+.login {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  background-image: url(/assets/background.jpg);
+  background-size: cover;
+
+  &__panel {
+    background-color: rgba($color: #ffffff, $alpha: 0.64);
+    width: 660px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  &__logo {
+    display: block;
+    width: 250px;
+    height: 250px;
+    background-image: url(/assets/icon.png);
+    background-image: url(/assets/icon.webp);
+    background-size: cover;
+    margin-top: auto;
+  }
+
+  &__title {
+    font: 300 56px 'Roboto', Arial, sans-serif;
+    color: #008ea6;
+    margin: 16px 0;
+  }
+
+  &__entry {
+    input {
+      border-radius: 5px;
+      border: 1px solid darkgray;
+      background-color: rgba($color: #ffffff, $alpha: 0.4);
+      font: 16px 'Roboto', Arial, sans-serif;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+    }
+  }
+
+  .new_user {
+    margin-bottom: auto;
+  }
+
+  &__buttons {
+    margin: bottom
+  }
+}
+

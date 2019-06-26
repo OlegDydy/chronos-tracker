@@ -85,14 +85,14 @@ class Board extends React.Component {
                       className="column__new-entry"
                       value={newColumnName}
                       ref="entry"
-                      placeholder="New Column Name"
+                      placeholder="Название Колонки"
                       onChange={handleChange}
                     />
-                    <button className="secondary" onClick={() => createColumn(projectId, newColumnName, () => showEditing(false))}>Add</button>
+                    <button className="secondary" onClick={() => createColumn(projectId, newColumnName, () => showEditing(false))}>Добавить</button>
                     <Cross className="column__close" onClick={() => showEditing(false)} />
                   </>
                 ) //on blur
-                : (<span className="column__new-label">+ New Column</span>)
+                : (<span className="column__new-label">+ Новая Колонка</span>)
             }
           </div>
         </div>
@@ -102,7 +102,8 @@ class Board extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  projects: store.projects
+  projects: store.projects,
+  user: store.user
 });
 
 const mapDispatchToProps = dispatch => {

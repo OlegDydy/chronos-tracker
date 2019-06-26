@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import Archive from '../icons/archive';
 import { connect } from 'react-redux';
 import { createTask, archiveTask, updateTask } from '../../actions/task';
+import { stopTrack, startTrack } from "../../actions/user";
 
 const ruleText = `
 .comment__text-edit.placeholder::before {
@@ -205,7 +206,7 @@ class TaskModal extends Component {
   }
   
   render() {
-    const { columns, user, projects, closeModal } = this.props;
+    const { columns, user, projects, closeModal, taskId, startTrack, stopTrack } = this.props;
     const { name, description, edit, isNew, column, project } = this.state;
     const {
       handleNameChange,
@@ -219,6 +220,25 @@ class TaskModal extends Component {
     } = this
     const clearDescription = markdown(clearHTML(description));
     const disabled = name.length == 0;
+
+    let timerButton = null;
+    if (!isNew){
+      if (user.track &&  user.track.taskId === taskId){
+        timerButton = (
+          <button className="card-modal__tool long" onClick={() => stopTrack(user.track.id)} >
+            <i className="fas fa-pause" /> Завершить Учет
+          </button>
+        );
+      }
+      else {
+        timerButton = (
+          <button className="card-modal__tool long" onClick={() => startTrack(taskId)}>
+            <i className="fas fa-play" /> Начать Учет
+          </button>
+        )
+      }
+    }
+
     return  (
       <div className="card-modal">
         <div className="card-modal__caption">
@@ -237,18 +257,18 @@ class TaskModal extends Component {
             )
             : <h1 onClick={editTitle}>{name || 'Enter Task Name'}</h1>
           }
-          <p className="tiny">Column: <u>{columns[column].name}</u></p>
+          <p className="tiny">Колонка: <u>{columns[column].name}</u></p>
         </div>
         <div className="card-modal__left">
-          <h2>Marks:</h2>
+          <h2>Отметки:</h2>
           <div className="card-modal__markers" >
             <div className="priority-desc priority0">
               <i className="fas fa-plus" />
             </div>
           </div>
-          <h2>Description:&nbsp;
+          <h2>Описание:&nbsp;
             <button className="card-modal__tool" onClick={editDescription}>
-              Edit
+              Править
             </button>
           </h2>
           {
@@ -268,31 +288,24 @@ class TaskModal extends Component {
               onClick={editDescription}
               dangerouslySetInnerHTML={{ __html: clearDescription ? clearDescription : 'Add description' }} />
           }
-          {isNew ? (<button onClick={handleSubmit} className="card-modal__tool">Create</button>) : showComments()}
+          {isNew ? (<button onClick={handleSubmit} className="card-modal__tool">Создать</button>) : showComments()}
         </div>
         <div className="card-modal__right">
-          <h2>Tools:</h2>
+          <h2>Инструменты:</h2>
           {
             isNew ? null
-            : (<button className="card-modal__tool long" onClick={archive}><Archive /> Archive</button>)
+            : (<button className="card-modal__tool long" onClick={archive}><Archive /> Архивировать</button>)
           }
           {
             user.id === projects[project].owner ? (
               <>
-                <button className="card-modal__tool long"><i className="far fa-clock" /> Deadline</button>
-                <button className="card-modal__tool long"><i className="fas fa-plus" /> Split</button>
+                <button className="card-modal__tool long"><i className="far fa-clock" /> Крайний срок</button>
+                <button className="card-modal__tool long"><i className="fas fa-plus" /> Разделить</button>
               </>
             )
             : null
           }
-          {
-            user.type === 'worker' ? (
-              <button className="card-modal__tool long" disabled={disabled}>
-                <i className="fas fa-play" /> Stopwatch
-              </button>
-            )
-            : null
-          }
+          { user.type === 'Worker' ? timerButton : null }
         </div>
       </div>
     )
@@ -310,7 +323,9 @@ const mapDispatchToProps = dispatch => {
   return {
     createTask: task => dispatch(createTask(task)),
     archive: (columnId, taskId, callback) => dispatch(archiveTask(columnId, taskId, callback)),
-    updateTask: task => dispatch(updateTask(task))
+    updateTask: task => dispatch(updateTask(task)),
+    stopTrack: trackId => dispatch(stopTrack(trackId)),
+    startTrack: taskId => dispatch(startTrack(taskId))
   }
 }
 

@@ -13,7 +13,8 @@ Modal.setAppElement('#App')
 class Column extends Component {
   state = {
     insertPlace: null,
-    hiddenTask: null
+    hiddenTask: null,
+    modalShown: false
   }
 
   dragOver = e => {
@@ -39,8 +40,6 @@ class Column extends Component {
       this.setState({
         insertPlace: i
       })
-
-      console.log.apply(console, data);
     }
   }
 
@@ -86,10 +85,16 @@ class Column extends Component {
     ));
   }
   
+  showModal = val => {
+    this.setState({
+      modalShown: val
+    })
+  }
+
   render() {
-    const { columns, columnId, showModal, modalShown, deleteColumn } = this.props;
-    const { insertPlace } = this.state;
-    const { dragOver, handleDrop, dragLeave, renderList } = this;
+    const { columns, columnId, deleteColumn } = this.props;
+    const { insertPlace, modalShown } = this.state;
+    const { dragOver, handleDrop, dragLeave, renderList, showModal } = this;
     const column = columns[columnId];
     if (!column) return null;
     
@@ -108,7 +113,7 @@ class Column extends Component {
         <div ref="list" className="column__list">
           { list }
         </div>
-        <div className="column__new-task" onClick={() => showModal(true)}>+ New Task</div>
+        <div className="column__new-task" onClick={() => showModal(true)}>+ Новая Задача</div>
         <Modal
           isOpen={modalShown} 
           onRequestClose={() => showModal(false)}
@@ -131,7 +136,6 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    showModal: task => dispatch(showTaskModal(task)),
     deleteColumn: (columnId, column) => dispatch(deleteColumn(columnId, column)),
     updateTask: (task, position, column) => dispatch(updateTask(task, position, column))
   }

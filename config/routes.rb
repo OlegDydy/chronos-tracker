@@ -16,5 +16,6 @@ Rails.application.routes.draw do
   resources :projects
   get '/', to: 'boards#index', as: :default
   get '/boards', to: 'boards#index', as: :user_root
+  get '/statistics', to: 'boards#index'
   post '/tasks/:id/archive', to: 'tasks#archive'
 end

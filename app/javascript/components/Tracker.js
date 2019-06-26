@@ -3,6 +3,8 @@ import NavBar from "./NavBar";
 import LeftPanel from "./LeftPanel";
 import Board from "./Board";
 import Timer from "./Timer";
+import Statistics from "./Statistics";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class Tracker extends Component {
   constructor(props) {
@@ -16,26 +18,25 @@ class Tracker extends Component {
   }
 
   render() {
-    const user = {id: 1, name: 'First Worker'}
     const { projectId, tab } = this.state
     return (
-      <>
-        <NavBar user={user} tab={tab} />
+      <Router>
+        <NavBar tab={tab} />
         <div className="panels">
           <LeftPanel
-            user={user}
             boards={[]}
             selectedIndex={projectId}
             setProject={ this.setProject }
           />
           <div id="content" className="content">
-            <Board user={user} projectId={projectId}  />
+            <Route path="/boards" render={ () => (<Board projectId={projectId} />)} />
+            <Route path="/statistics" render={ () => (<Statistics projectId={projectId} />)} />
           </div>
         </div>
         <Timer />
-      </>
+      </Router>
     );
   }
 }
- 
+
 export default Tracker;

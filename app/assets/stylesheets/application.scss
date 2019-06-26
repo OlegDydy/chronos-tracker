@@ -20,6 +20,8 @@
 @import './components/task_modal.scss';
 @import './components/left_panel.scss';
 @import './components/nav_bar.scss';
+@import './components/login.scss';
+@import './components/statistics.scss';
 
 * {
   box-sizing: border-box;
@@ -58,7 +60,7 @@ a {
   margin-top: 2rem;
 }
 
-button, input[type='submit'], input[type='button']{
+button, input[type='submit'], input[type='button'], .btn{
   background-color: $accent1;
   padding: 8px 15px;
   color: $accent2;

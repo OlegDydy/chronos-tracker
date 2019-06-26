@@ -1,5 +1,7 @@
 import React from "react"
-import PropTypes from "prop-types"
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
 class NavBar extends React.Component {
   render () {
     return (
@@ -8,18 +10,22 @@ class NavBar extends React.Component {
           <span className="nav-bar__icon"></span>
           <span>ODEP</span>
         </a>
-        <a href="/boards" className="nav-bar__tab selected">
-          Projects
-        </a>
-        <a href="/statistics" className="nav-bar__tab">
-          Statistics
-        </a>
-        <a href="/vacations" className="nav-bar__tab hidden">
-          Vacations
-        </a>
+        <Link to="/boards" className="nav-bar__tab selected">
+          Проекты
+        </Link>
+        <Link to="/statistics" className="nav-bar__tab">
+          Статистика
+        </Link>
+        <Link to="/vacations" className="nav-bar__tab hidden">
+          Отпуска
+        </Link>
       </nav>
     );
   }
 }
 
-export default NavBar
+const mapStateToProps = store => ({
+  user: store.user
+});
+
+export default connect(mapStateToProps)(NavBar)
